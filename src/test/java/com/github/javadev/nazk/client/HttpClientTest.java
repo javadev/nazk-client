@@ -12,7 +12,16 @@ public class HttpClientTest {
     @Test
     public void getDeclarations() throws Exception {
         Map<String, Object> declarations = client.getDeclarations("");
-        assertEquals("", declarations.toString());
+        assertEquals("1", $.get(declarations, "page.currentPage").toString());
+        assertEquals("400", $.get(declarations, "page.batchSize").toString());
+    }
+
+    @Test
+    public void getDeclaration() throws Exception {
+        Map<String, Object> declarations = client.getDeclarations("");
+        String id = (String) $.get(declarations, "items.0.id");
+        Map<String, Object> declaration = client.getDeclaration(id);
+        assertEquals("1", $.get(declaration, "data.step_0.declarationType").toString());
     }
 
     @Test

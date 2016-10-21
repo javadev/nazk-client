@@ -35,7 +35,7 @@ public class HttpClient implements NazkClient {
 
     @Override
     public Map<String, Object> getDeclaration(String id) {
-        return (Map<String, Object>) get("/" + id).json();
+        return ((List<Map<String, Object>>) get("/" + id).json()).get(0);
     }
 
     public static void main(String ... args) {
