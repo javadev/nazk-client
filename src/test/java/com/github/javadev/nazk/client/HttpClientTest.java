@@ -18,10 +18,9 @@ public class HttpClientTest {
 
     @Test
     public void getDeclaration() throws Exception {
-        Map<String, Object> declarations = client.getDeclarations("");
-        String id = (String) $.get(declarations, "items.0.id");
-        Map<String, Object> declaration = client.getDeclaration(id);
+        Map<String, Object> declaration = client.getDeclaration("043c6b5d-a470-4fb0-bc3b-3332af7fe10e");
         assertEquals("1", $.get(declaration, "data.step_0.declarationType").toString());
+        assertEquals("Люстдорфська дорога", $.get(declaration, "data.step_1.street").toString());
     }
 
     @Test
