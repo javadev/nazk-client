@@ -6,4 +6,6 @@ public interface NazkClient {
     Map<String, Object> getDeclarations(String queryString);
 
     Map<String, Object> getDeclaration(String id);
+
+    String getDeclarationHtml(String id);
 }

@@ -38,6 +38,11 @@ public class HttpClient implements NazkClient {
         return $.last((List<Map<String, Object>>) get("/" + id).json());
     }
 
+    @Override
+    public String getDeclarationHtml(String id) {
+        return $.fetch("https://public.nazk.gov.ua/declaration/" + id).text();
+    }
+
     public static void main(String ... args) {
         final String message = "Java client for declarations from the nazk.gov.ua.\n\n"
             + "For docs, license, tests, and downloads, see: https://github.com/javadev/nazk-client";
