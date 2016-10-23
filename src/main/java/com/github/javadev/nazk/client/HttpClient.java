@@ -85,42 +85,65 @@ public class HttpClient implements NazkClient {
         return result;
     }
 
+    private static class CallableSaveImpl implements Callable<Void> {
+
+        private final String directoryName;
+        private final Map<String, Object> declaration;
+
+        public CallableSaveImpl(String directoryName, Map<String, Object> declaration) {
+            this.directoryName = directoryName;
+            this.declaration = declaration;
+        }
+
+        public Void call() {
+            if (declaration.get("pdf") != null) {
+                try {
+                    FileOutputStream stream = new FileOutputStream(directoryName + "/"
+                        + (String) declaration.get("id") + ".pdf");
+                    stream.write((byte[]) declaration.get("pdf"));
+                    stream.close();
+                } catch (IOException ex) {
+                }
+            }
+            try {
+                OutputStreamWriter writerHtml = new OutputStreamWriter(
+                    new FileOutputStream(directoryName + "/"
+                    + (String) declaration.get("id") + ".html"), "UTF-8");
+                writerHtml.write((String) declaration.get("html"));
+                writerHtml.close();
+            } catch (IOException ex) {
+            }
+            try {
+                OutputStreamWriter writerJson = new OutputStreamWriter(
+                    new FileOutputStream(directoryName + "/"
+                    + (String) declaration.get("id") + ".json"), "UTF-8");
+                writerJson.write((String) declaration.get("json"));
+                writerJson.close();
+            } catch (IOException ex) {
+            }
+            return null;
+        }
+    }
+
     @Override
     public void getAndSaveAllDeclarations(String directoryName, int maxPages) {
         int index = 0;
         new File(directoryName).mkdirs();        
         List<Map<String, Object>> declarations = getDeclarationsBatch(index); 
+        final ExecutorService executor = Executors.newFixedThreadPool(100);
         while(declarations.size() > 0 && (maxPages == 0 || index < maxPages)) {
+            final List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
             for (Map<String, Object> declaration : declarations) {
-                if (declaration.get("pdf") != null) {
-                    try {
-                        FileOutputStream stream = new FileOutputStream(directoryName + "/"
-                            + (String) declaration.get("id") + ".pdf");
-                        stream.write((byte[]) declaration.get("pdf"));
-                        stream.close();
-                    } catch (IOException ex) {
-                    }
-                }
-                try {
-                    OutputStreamWriter writerHtml = new OutputStreamWriter(
-                        new FileOutputStream(directoryName + "/"
-                        + (String) declaration.get("id") + ".html"), "UTF-8");
-                    writerHtml.write((String) declaration.get("html"));
-                    writerHtml.close();
-                } catch (IOException ex) {
-                }
-                try {
-                    OutputStreamWriter writerJson = new OutputStreamWriter(
-                        new FileOutputStream(directoryName + "/"
-                        + (String) declaration.get("id") + ".json"), "UTF-8");
-                    writerJson.write((String) declaration.get("json"));
-                    writerJson.close();
-                } catch (IOException ex) {
-                }
+                callables.add(new CallableSaveImpl(directoryName, declaration));
+            }
+            try {
+                executor.invokeAll(callables);
+            } catch (InterruptedException ex) {
             }
             index += 1;
             declarations = getDeclarationsBatch(index);
         } 
+        executor.shutdown();
     }
 
     @Override
