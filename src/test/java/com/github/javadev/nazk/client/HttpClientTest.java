@@ -45,6 +45,11 @@ public class HttpClientTest {
         assertEquals(400, declarationsBatch.size());
     }
 
+    @Test 
+    public void getAndSaveAllDeclarations() {
+        client.getAndSaveAllDeclarations("test", 1);
+    }
+
     @Test
     public void main() {
         HttpClient.main("test");

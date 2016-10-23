@@ -1,9 +1,12 @@
 package com.github.javadev.nazk.client;
 
 import com.github.underscore.lodash.$;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class HttpClient implements NazkClient {
             final Map<String, Object> declaration = nazkClient.getDeclaration(id);
             final String declarationHtml = nazkClient.getDeclarationHtml(id);
             return new HashMap<String, Object>() { {
+                put("id", id);
                 put("json", $.toJson(declaration));
                 put("html", declarationHtml);
                 put("pdf", linkPdf == null ? null : $.fetch(linkPdf).blob());
@@ -79,6 +83,44 @@ public class HttpClient implements NazkClient {
         }
         executor.shutdown();
         return result;
+    }
+
+    @Override
+    public void getAndSaveAllDeclarations(String directoryName, int maxPages) {
+        int index = 0;
+        new File(directoryName).mkdirs();        
+        List<Map<String, Object>> declarations = getDeclarationsBatch(index); 
+        while(declarations.size() > 0 && (maxPages == 0 || index < maxPages)) {
+            for (Map<String, Object> declaration : declarations) {
+                if (declaration.get("pdf") != null) {
+                    try {
+                        FileOutputStream stream = new FileOutputStream(directoryName + "/"
+                            + (String) declaration.get("id") + ".pdf");
+                        stream.write((byte[]) declaration.get("pdf"));
+                        stream.close();
+                    } catch (IOException ex) {
+                    }
+                }
+                try {
+                    OutputStreamWriter writerHtml = new OutputStreamWriter(
+                        new FileOutputStream(directoryName + "/"
+                        + (String) declaration.get("id") + ".html"), "UTF-8");
+                    writerHtml.write((String) declaration.get("html"));
+                    writerHtml.close();
+                } catch (IOException ex) {
+                }
+                try {
+                    OutputStreamWriter writerJson = new OutputStreamWriter(
+                        new FileOutputStream(directoryName + "/"
+                        + (String) declaration.get("id") + ".json"), "UTF-8");
+                    writerJson.write((String) declaration.get("json"));
+                    writerJson.close();
+                } catch (IOException ex) {
+                }
+            }
+            index += 1;
+            declarations = getDeclarationsBatch(index);
+        } 
     }
 
     @Override

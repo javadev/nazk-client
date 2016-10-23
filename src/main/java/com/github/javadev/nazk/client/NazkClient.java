@@ -11,4 +11,6 @@ public interface NazkClient {
     String getDeclarationHtml(String id);
 
     List<Map<String, Object>> getDeclarationsBatch(int page);
+
+    void getAndSaveAllDeclarations(String directoryName, int maxPages);
 }
