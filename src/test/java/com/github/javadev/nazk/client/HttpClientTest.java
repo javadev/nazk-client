@@ -28,7 +28,14 @@ public class HttpClientTest {
     public void getDeclarationHtml() {
         String declaration = client.getDeclarationHtml("043c6b5d-a470-4fb0-bc3b-3332af7fe10e");
         assertTrue(declaration.startsWith("<!DOCTYPE html><html lang=\"en\"><head> "
-        + "<meta charset=\"utf-8\"> <title>Перегляд декларації"));
+            + "<meta charset=\"utf-8\"> <title>Перегляд декларації"));
+    }
+
+    @Test
+    public void getDeclarationPdf() {
+        byte[] data = $.fetch("https://public.nazk.gov.ua/storage/documents/pdf/"
+            + "5/0/e/e/50ee7eae-f4ee-4b5c-b67d-9917154f7c53.pdf").blob();
+        assertTrue(data.length > 10000);
     }
 
     @Test
