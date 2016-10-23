@@ -1,5 +1,6 @@
 package com.github.javadev.nazk.client;
 
+import java.util.List;
 import java.util.Map;
 import com.github.underscore.lodash.$;
 import org.junit.Test;
@@ -36,6 +37,12 @@ public class HttpClientTest {
         byte[] data = $.fetch("https://public.nazk.gov.ua/storage/documents/pdf/"
             + "5/0/e/e/50ee7eae-f4ee-4b5c-b67d-9917154f7c53.pdf").blob();
         assertTrue(data.length > 10000);
+    }
+
+    @Test
+    public void getDeclarationsBatch() {
+        List<Map<String, Object>> declarationsBatch = client.getDeclarationsBatch(0);
+        assertEquals(400, declarationsBatch.size());
     }
 
     @Test
