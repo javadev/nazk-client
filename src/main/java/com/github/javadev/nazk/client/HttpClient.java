@@ -76,10 +76,14 @@ public class HttpClient implements NazkClient {
         }
         try {
             for (Future<Map<String, Object>> future : executor.invokeAll(callables)) {
-                result.add(future.get());
+                try {
+                    result.add(future.get());
+                } catch (ExecutionException ex) {
+                    System.out.println("ExecutionException - " + ex.getMessage());
+                }
             }
-        } catch (ExecutionException ex) {
         } catch (InterruptedException ex) {
+            System.out.println("InterruptedException - " + ex.getMessage());
         }
         executor.shutdown();
         return result;
