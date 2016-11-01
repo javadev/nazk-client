@@ -22,7 +22,7 @@ public class HttpClientTest {
     public void getDeclaration() {
         Map<String, Object> declaration = client.getDeclaration("043c6b5d-a470-4fb0-bc3b-3332af7fe10e");
         assertEquals("1", $.get(declaration, "data.step_0.declarationType").toString());
-        assertEquals("Люстдорфська дорога", $.get(declaration, "data.step_1.street").toString());
+        assertEquals("[Конфіденційна інформація]", $.get(declaration, "data.step_1.street").toString());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class HttpClientTest {
     @Test
     public void getDeclarationsBatch() {
         List<Map<String, Object>> declarationsBatch = client.getDeclarationsBatch(0);
-        assertEquals(400, declarationsBatch.size());
+        assertTrue("declarationsBatch.size() should be more than 390", declarationsBatch.size() > 390);
     }
 
     @Test 
