@@ -31,7 +31,7 @@ public class HttpClient implements NazkClient {
     }
 
     private $.FetchResponse get(final String resourceUrl) {
-        return $.fetch(this.baseUrl + resourceUrl);
+        return $.fetch(this.baseUrl + resourceUrl, 120000, 120000);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class HttpClient implements NazkClient {
 
     @Override
     public Map<String, Object> getDeclaration(String id) {
-        return $.last((List<Map<String, Object>>) get("/" + id).json());
+        return (Map<String, Object>) get("/" + id).json();
     }
 
     @Override
