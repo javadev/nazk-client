@@ -1,0 +1,15 @@
+language: java
+
+jdk:
+  - openjdk6
+  - openjdk7
+  - oraclejdk7
+  - oraclejdk8
+
+script:
+  - mvn clean install jacoco:report coveralls:jacoco
+
+addons:
+   hosts:
+       - travis
+   hostname: travis
