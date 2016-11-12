@@ -10,7 +10,7 @@ public interface NazkClient {
 
     String getDeclarationHtml(String id);
 
-    List<Map<String, Object>> getDeclarationsBatch(int page);
+    List<Map<String, Object>> getDeclarationsBatch(String queryString, int page);
 
-    void getAndSaveAllDeclarations(String directoryName, int maxPages);
+    int getAndSaveAllDeclarations(String queryString, String directoryName, int maxPages);
 }

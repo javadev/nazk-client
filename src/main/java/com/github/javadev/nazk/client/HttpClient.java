@@ -64,12 +64,16 @@ public class HttpClient implements NazkClient {
     }
 
     @Override
-    public List<Map<String, Object>> getDeclarationsBatch(int page) {
-        Map<String, Object> data = (Map<String, Object>) get("/?page=" + page).json();
+    public List<Map<String, Object>> getDeclarationsBatch(String queryString, int page) {
+        Map<String, Object> data = (Map<String, Object>) get("/?q=" + queryString + "&page=" + page).json();
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        if ($.get(data, "error") != null) {
+            return result;
+        }
         final ExecutorService executor = Executors.newFixedThreadPool(100);
         final List<Callable<Map<String, Object>>> callables = new ArrayList<Callable<Map<String, Object>>>();
-        for (int index = 0; index < (Long) $.get(data, "page.batchSize"); index += 1) {
+        for (int index = 0; index < Math.min((Long) $.get(data, "page.batchSize"),
+            (Long) $.get(data, "page.totalItems")); index += 1) {
             String id = (String) $.get(data, "items." + index + ".id");
             String linkPdf = (String) $.get(data, "items." + index + ".linkPDF");
             callables.add(new CallableImpl(this, id, linkPdf));
@@ -130,10 +134,12 @@ public class HttpClient implements NazkClient {
     }
 
     @Override
-    public void getAndSaveAllDeclarations(String directoryName, int maxPages) {
+    public int getAndSaveAllDeclarations(String queryString, String directoryName, int maxPages) {
         int index = 0;
+        int resultCount = 0;
         new File(directoryName).mkdirs();        
-        List<Map<String, Object>> declarations = getDeclarationsBatch(index); 
+        List<Map<String, Object>> declarations = getDeclarationsBatch(queryString, index);
+        resultCount = declarations.size();
         final ExecutorService executor = Executors.newFixedThreadPool(100);
         while(declarations.size() > 0 && (maxPages == 0 || index < maxPages)) {
             final List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
@@ -145,9 +151,13 @@ public class HttpClient implements NazkClient {
             } catch (InterruptedException ex) {
             }
             index += 1;
-            declarations = getDeclarationsBatch(index);
+            if (maxPages > 1) {
+                declarations = getDeclarationsBatch(queryString, index);
+                resultCount += declarations.size();
+            }
         } 
         executor.shutdown();
+        return resultCount;
     }
 
     @Override
@@ -161,8 +171,24 @@ public class HttpClient implements NazkClient {
     }
 
     public static void main(String ... args) {
-        final String message = "Java client for declarations from the nazk.gov.ua.\n\n"
-            + "For docs, license, tests, and downloads, see: https://github.com/javadev/nazk-client";
-        System.out.println(message);
+        String query = "";
+        String dest = ".";
+        if (args.length == 0) {
+            final String message = "Java client for declarations from the nazk.gov.ua.\n\n"
+                + "For docs, license, tests, and downloads, see: https://github.com/javadev/nazk-client\n\n"
+                + "Usage: java -jar nazk-client.jar "
+                + "--query=3371ace7-177b-44d6-ba2a-53e023f740be --dest=test\n";
+            System.out.println(message);
+        } else {
+            for (String arg : args) {
+                if (arg.startsWith("--query=")) {
+                    query = arg.substring("--query=".length()).trim().replace("\"", "");
+                } else if (arg.startsWith("--dest=")) {
+                    dest = arg.substring("--dest=".length()).trim();
+                }
+            }
+            int resultCount = HttpClient.createDefault().getAndSaveAllDeclarations(query, dest, 1);
+            System.out.println(resultCount + " declaration(s) was(were) downloaded to the folder " + dest);
+        }
     }
 }

@@ -41,17 +41,17 @@ public class HttpClientTest {
 
     @Test
     public void getDeclarationsBatch() {
-        List<Map<String, Object>> declarationsBatch = client.getDeclarationsBatch(0);
+        List<Map<String, Object>> declarationsBatch = client.getDeclarationsBatch("", 0);
         assertTrue("declarationsBatch.size() should be more than 390", declarationsBatch.size() > 390);
     }
 
     @Test 
     public void getAndSaveAllDeclarations() {
-        client.getAndSaveAllDeclarations("test", 1);
+        client.getAndSaveAllDeclarations("", "test", 1);
     }
 
     @Test
     public void main() {
-        HttpClient.main("test");
+        HttpClient.main(new String[] {});
     }
 }

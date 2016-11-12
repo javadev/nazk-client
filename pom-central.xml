@@ -5,7 +5,7 @@
   <groupId>com.github.javadev</groupId>
   <artifactId>nazk-client</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>Java client for declarations</name>
   <description>Java client for declarations from the nazk.gov.ua</description>
   <url>https://github.com/javadev/nazk-client</url>
@@ -56,6 +56,18 @@
           <target>1.6</target>
           <encoding>UTF-8</encoding>
         </configuration>
+      </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+              <archive>
+                  <manifest>
+                      <mainClass>com.github.javadev.nazk.client.HttpClient</mainClass>
+                  </manifest>
+              </archive>
+          </configuration>
       </plugin>
       <plugin>
           <groupId>org.apache.maven.plugins</groupId>

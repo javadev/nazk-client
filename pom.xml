@@ -3,9 +3,9 @@
   <groupId>com.github.javadev</groupId>
   <artifactId>nazk-client</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
 
-  <name>${project.groupId}:${project.artifactId}</name>
+  <name>Java client for declarations</name>
   <description>Java client for declarations from the nazk.gov.ua</description>
   <url>https://github.com/javadev/nazk-client</url>
 
@@ -72,6 +72,50 @@
           <target>1.6</target>
           <encoding>UTF-8</encoding>
         </configuration>
+      </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+              <archive>
+                  <manifest>
+                      <mainClass>com.github.javadev.nazk.client.HttpClient</mainClass>
+                  </manifest>
+              </archive>
+          </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/maven/**</exclude>
+                    <exclude>META-INF/services/**</exclude>
+                    <exclude>META-INF/COPYRIGHT.html</exclude>
+                    <exclude>META-INF/LICENSE*</exclude>
+                    <exclude>META-INF/NOTICE*</exclude>
+                    <exclude>META-INF/README.txt</exclude>
+                    <exclude>META-INF/DEPENDENCIES*</exclude>
+                    <exclude>LICENSE.txt</exclude>
+                    <exclude>rhinoDiff.txt</exclude>
+                    <exclude>license/**</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
