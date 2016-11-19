@@ -4,6 +4,27 @@ Java client for declarations from the nazk.gov.ua.
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.javadev/nazk-client.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.javadev%22%20AND%20a%3A%22nazk-client%22)
 [![Build Status](https://secure.travis-ci.org/javadev/nazk-client.svg)](https://travis-ci.org/javadev/nazk-client)
 
+### Installation
+
+Include the following in your `pom.xml` for Maven:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.github.javadev</groupId>
+    <artifactId>nazk-client</artifactId>
+    <version>1.1</version>
+  </dependency>
+  ...
+</dependencies>
+```
+
+Gradle:
+
+```groovy
+compile 'com.github.javadev:nazk-client:1.1'
+```
+
 Declaration request example:
 
 ```java
