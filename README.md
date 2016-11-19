@@ -28,9 +28,18 @@ compile 'com.github.javadev:nazk-client:1.1'
 Declaration request example:
 
 ```java
-    NazkClient client = HttpClient.createDefault();
-    Map<String, Object> declaration = client.getDeclaration("043c6b5d-a470-4fb0-bc3b-3332af7fe10e");
-    System.out.println($.toJson(declaration));
+import com.github.javadev.nazk.client.HttpClient;
+import com.github.javadev.nazk.client.NazkClient;
+import java.util.Map;
+import com.github.underscore.lodash.$;
+
+public class Main {
+    public static void main(String[] args) {
+        NazkClient client = HttpClient.createDefault();
+        Map<String, Object> declaration = client.getDeclaration("043c6b5d-a470-4fb0-bc3b-3332af7fe10e");
+        System.out.println($.toJson(declaration));
+    }
+}
 ```
 
 Output:
