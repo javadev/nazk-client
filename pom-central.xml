@@ -5,7 +5,7 @@
   <groupId>com.github.javadev</groupId>
   <artifactId>nazk-client</artifactId>
   <packaging>jar</packaging>
-  <version>1.1</version>
+  <version>1.2</version>
   <name>Java client for declarations</name>
   <description>Java client for declarations from the nazk.gov.ua</description>
   <url>https://github.com/javadev/nazk-client</url>
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>com.github.javadev</groupId>
       <artifactId>underscore-lodash</artifactId>
-      <version>1.16</version>
+      <version>1.20</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
