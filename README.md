@@ -13,7 +13,7 @@ Include the following in your `pom.xml` for Maven:
   <dependency>
     <groupId>com.github.javadev</groupId>
     <artifactId>nazk-client</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
   </dependency>
   ...
 </dependencies>
@@ -22,7 +22,7 @@ Include the following in your `pom.xml` for Maven:
 Gradle:
 
 ```groovy
-compile 'com.github.javadev:nazk-client:1.1'
+compile 'com.github.javadev:nazk-client:1.2'
 ```
 
 Declaration request example:
