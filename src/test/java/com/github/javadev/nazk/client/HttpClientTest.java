@@ -42,7 +42,7 @@ public class HttpClientTest {
     @Test
     public void getDeclarationsBatch() {
         List<Map<String, Object>> declarationsBatch = client.getDeclarationsBatch("", 0);
-        assertTrue("declarationsBatch.size() should be more than 390", declarationsBatch.size() > 390);
+        assertTrue("declarationsBatch.size() should be more than 10", declarationsBatch.size() > 10);
     }
 
     @Test 

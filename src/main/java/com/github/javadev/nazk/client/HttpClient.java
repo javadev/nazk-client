@@ -1,6 +1,7 @@
 package com.github.javadev.nazk.client;
 
 import com.github.underscore.lodash.$;
+import com.github.underscore.Function;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -73,7 +74,7 @@ public class HttpClient implements NazkClient {
         final ExecutorService executor = Executors.newFixedThreadPool(100);
         final List<Callable<Map<String, Object>>> callables = new ArrayList<Callable<Map<String, Object>>>();
         for (int index = 0; index < Math.min((Long) $.get(data, "page.batchSize"),
-            (Long) $.get(data, "page.totalItems")); index += 1) {
+            Long.parseLong((String) $.get(data, "page.totalItems"))); index += 1) {
             String id = (String) $.get(data, "items." + index + ".id");
             String linkPdf = (String) $.get(data, "items." + index + ".linkPDF");
             callables.add(new CallableImpl(this, id, linkPdf));
