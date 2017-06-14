@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import com.github.underscore.lodash.$;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,6 +34,7 @@ public class HttpClientTest {
     }
 
     @Test
+    @Ignore
     public void getDeclarationPdf() {
         byte[] data = $.fetch("https://public.nazk.gov.ua/storage/documents/pdf/"
             + "5/0/e/e/50ee7eae-f4ee-4b5c-b67d-9917154f7c53.pdf").blob();
