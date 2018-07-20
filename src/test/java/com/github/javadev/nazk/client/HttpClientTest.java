@@ -2,28 +2,27 @@ package com.github.javadev.nazk.client;
 
 import java.util.List;
 import java.util.Map;
-import com.github.underscore.lodash.$;
+import com.github.underscore.lodash.U;
 import org.junit.Test;
-import org.junit.Ignore;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class HttpClientTest {
-    private static NazkClient client = HttpClient.createDefault();
+    private static final NazkClient client = HttpClient.createDefault();
 
     @Test
     public void getDeclarations() {
         Map<String, Object> declarations = client.getDeclarations("");
-        assertEquals("1", $.get(declarations, "page.currentPage").toString());
-        assertEquals("400", $.get(declarations, "page.batchSize").toString());
+        assertEquals("1", U.get(declarations, "page.currentPage").toString());
+        assertEquals("400", U.get(declarations, "page.batchSize").toString());
     }
 
     @Test
     public void getDeclaration() {
         Map<String, Object> declaration = client.getDeclaration("043c6b5d-a470-4fb0-bc3b-3332af7fe10e");
-        assertEquals("1", $.get(declaration, "data.step_0.declarationType").toString());
-        assertEquals("[Конфіденційна інформація]", $.get(declaration, "data.step_1.street").toString());
+        assertEquals("1", U.get(declaration, "data.step_0.declarationType").toString());
+        assertEquals("[Конфіденційна інформація]", U.get(declaration, "data.step_1.street").toString());
     }
 
     @Test
@@ -34,9 +33,8 @@ public class HttpClientTest {
     }
 
     @Test
-    @Ignore
     public void getDeclarationPdf() {
-        byte[] data = $.fetch("https://public.nazk.gov.ua/storage/documents/pdf/"
+        byte[] data = U.fetch("https://public.nazk.gov.ua/storage/documents/pdf/"
             + "5/0/e/e/50ee7eae-f4ee-4b5c-b67d-9917154f7c53.pdf").blob();
         assertTrue(data.length > 10000);
     }

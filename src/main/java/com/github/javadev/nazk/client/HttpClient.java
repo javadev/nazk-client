@@ -1,10 +1,8 @@
 package com.github.javadev.nazk.client;
 
-import com.github.underscore.lodash.$;
-import com.github.underscore.Function;
+import com.github.underscore.lodash.U;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -31,8 +29,8 @@ public class HttpClient implements NazkClient {
         return new HttpClient(BASE_URL);
     }
 
-    private $.FetchResponse get(final String resourceUrl) {
-        return $.fetch(this.baseUrl + resourceUrl, 120000, 120000);
+    private U.FetchResponse get(final String resourceUrl) {
+        return U.fetch(this.baseUrl + resourceUrl, 120000, 120000);
     }
 
     @Override
@@ -57,9 +55,9 @@ public class HttpClient implements NazkClient {
             final String declarationHtml = nazkClient.getDeclarationHtml(id);
             return new HashMap<String, Object>() { {
                 put("id", id);
-                put("json", $.toJson(declaration));
+                put("json", U.toJson(declaration));
                 put("html", declarationHtml);
-                put("pdf", linkPdf == null ? null : $.fetch(linkPdf).blob());
+                put("pdf", linkPdf == null ? null : U.fetch(linkPdf).blob());
             } };
         }
     }
@@ -68,15 +66,15 @@ public class HttpClient implements NazkClient {
     public List<Map<String, Object>> getDeclarationsBatch(String queryString, int page) {
         Map<String, Object> data = (Map<String, Object>) get("/?q=" + queryString + "&page=" + page).json();
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        if ($.get(data, "error") != null) {
+        if (U.get(data, "error") != null) {
             return result;
         }
         final ExecutorService executor = Executors.newFixedThreadPool(100);
         final List<Callable<Map<String, Object>>> callables = new ArrayList<Callable<Map<String, Object>>>();
-        for (int index = 0; index < Math.min((Long) $.get(data, "page.batchSize"),
-            Long.parseLong((String) $.get(data, "page.totalItems"))); index += 1) {
-            String id = (String) $.get(data, "items." + index + ".id");
-            String linkPdf = (String) $.get(data, "items." + index + ".linkPDF");
+        for (int index = 0; index < Math.min((Long) U.get(data, "page.batchSize"),
+            Long.parseLong((String) U.get(data, "page.totalItems"))); index += 1) {
+            String id = (String) U.get(data, "items." + index + ".id");
+            String linkPdf = (String) U.get(data, "items." + index + ".linkPDF");
             callables.add(new CallableImpl(this, id, linkPdf));
         }
         try {
@@ -168,7 +166,7 @@ public class HttpClient implements NazkClient {
 
     @Override
     public String getDeclarationHtml(String id) {
-        return $.fetch(BASE_URL_HTML + id).text();
+        return U.fetch(BASE_URL_HTML + id).text();
     }
 
     public static void main(String ... args) {
