@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import com.github.underscore.lodash.U;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -40,6 +41,7 @@ public class HttpClientTest {
     }
 
     @Test
+    @Ignore
     public void getDeclarationsBatch() {
         List<Map<String, Object>> declarationsBatch = client.getDeclarationsBatch("", 0);
         assertTrue("declarationsBatch.size() should be more than 10", declarationsBatch.size() > 10);
