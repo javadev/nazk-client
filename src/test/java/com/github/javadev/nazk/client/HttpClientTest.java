@@ -2,7 +2,7 @@ package com.github.javadev.nazk.client;
 
 import java.util.List;
 import java.util.Map;
-import com.github.underscore.lodash.U;
+import com.github.underscore.U;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -53,7 +53,7 @@ public class HttpClientTest {
     }
 
     @Test
-    public void main() {
+    public void testMain() {
         HttpClient.main(new String[] {});
     }
 }

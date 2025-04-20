@@ -1,6 +1,6 @@
 package com.github.javadev.nazk.client;
 
-import com.github.underscore.lodash.U;
+import com.github.underscore.U;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,8 +73,8 @@ public class HttpClient implements NazkClient {
         final List<Callable<Map<String, Object>>> callables = new ArrayList<Callable<Map<String, Object>>>();
         for (int index = 0; index < Math.min((Long) U.get(data, "page.batchSize"),
             Long.parseLong((String) U.get(data, "page.totalItems"))); index += 1) {
-            String id = (String) U.get(data, "items." + index + ".id");
-            String linkPdf = (String) U.get(data, "items." + index + ".linkPDF");
+            String id = U.get(data, "items." + index + ".id");
+            String linkPdf = U.get(data, "items." + index + ".linkPDF");
             callables.add(new CallableImpl(this, id, linkPdf));
         }
         try {
@@ -140,7 +140,7 @@ public class HttpClient implements NazkClient {
         List<Map<String, Object>> declarations = getDeclarationsBatch(queryString, index);
         resultCount = declarations.size();
         final ExecutorService executor = Executors.newFixedThreadPool(100);
-        while(declarations.size() > 0 && (maxPages == 0 || index < maxPages)) {
+        while(!declarations.isEmpty() && (maxPages == 0 || index < maxPages)) {
             final List<Callable<Void>> callables = new ArrayList<Callable<Void>>();
             for (Map<String, Object> declaration : declarations) {
                 callables.add(new CallableSaveImpl(directoryName, declaration));
