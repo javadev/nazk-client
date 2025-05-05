@@ -33,7 +33,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <underscore.version>1.81</underscore.version>
+    <underscore.version>1.113</underscore.version>
     <junit.version>4.13.2</junit.version>
   </properties>
 
